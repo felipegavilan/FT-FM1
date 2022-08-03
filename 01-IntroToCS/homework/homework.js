@@ -10,7 +10,7 @@ function DecimalABinario(num) {
   // tu codigo aca
 
   var res='';
-  while(num !=0){
+  while(num > 0){
     res = num % 2 + res;
     num = Math.floor(num/2);
   }
