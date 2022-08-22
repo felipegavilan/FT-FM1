@@ -10,10 +10,127 @@ Implementar la clase LinkedList, definiendo los siguientes métodos:
   search(isEven), donde isEven es una función que retorna true cuando recibe por parámetro un número par, busca un nodo cuyo valor sea un número par.
   En caso de que la búsqueda no arroje resultados, search debe retornar null.
 */
+function LinkedList(){
+  this.head = null;
+}
+function Node(data){
+  this.value = data;
+  this.next = null;
+}
+LinkedList.prototype.add = function(data){
+let nodo = new Node(data);
+let current = this.head;
+if(!current){
+  this.head = nodo;
+  return nodo;
+}
+while (current.next){
+  current = current.next;
+}
+current.next = nodo;
+return nodo;
+};
+LinkedList.prototype.remove = function(){
+  
+  if(!this.head) return null;
+  if(this.head && !this.head.next){
+    let aux = this.head;
+    this.head = null;
+    return aux.value;
+  }
+  let current = this.head;
+  while(current.next.next){
+    current = current.next;
+  }
+    let aux = current.next;
+    current.next = null;
+    return aux.value;
+   
+};
+LinkedList.prototype.search = function(data){
+  if(!this.head) return null;
+  
+  let current = this.head;
+  while (current){
+    if(current.value === data) return current.value;
+    else if(typeof data === 'function'){
+      if(data(current.value)) return current.value;
+    } 
+    current = current.next;
+  }
+  return null;
+};
+//--------------------------------------------------------------------------------------------
+// class LinkedList {
+//   constructor(){
+//   this.head = null;
+// }
+// add(data){
+//   let node = new Node(data);
+//   let current = this.head;
+// // si esta vacio
+//   if (!current){
+//     this.head = node;
+//     return node;
+//   }
+//   //si hay nodos que
+//   // recorremos los nodos  
+//   while (current.next){
+//     //si next tiene elemento,
+//     // se reasigna current y pasa al siguiente nodo
+//     current = current.next;
+//   }
+//   current.next = node;
+//   return node;
+// }
+// remove(){
+//   //verificamos si la lista no tiene elementos
+//   if (!this.head) return null;
+//   // verificamos si tiene 1 solo elemento
+//   if(this.head && !this.head.next){
+//     let aux = this.head;
+//     this.head = null;
+//     return aux.value;
+//   }
+//   // si la lista tiene muchos elementos
+//   let current = this.head;
+//   while (current.next.next){
+//     current = current.next;
+//   }
+//   let aux = current.next;
+//   current.next = null;
+//   return aux.value;
+// }
+// search(value){
+//   // verificamos si la lista no tiene elementos
+//   if(!this.head) return null;
+//   // si tiene elementos almancenamos el valor del head dentro de una variable para el variable
+//   // hacer el recorrido de la busqueda y corroborar el typeof del elemento.
+//   let current = this.head;
+//   while (current){
+//     // si el typeof del argumento es igual al valor del elemento de la lista de
+//     //retornamos el nodo
+//     if(current.value === value) return current.value;
+//     // si el typeof del argumento es igual a una funcion
+//     //buscamos el resultado de la funcion que sea igual al elemento dentro de la lista
+//     else if(typeof value === 'function'){
+//       if(value(current.value)) return current.value;
+//     }
+//     current = current.next;
+//   }
+//   return null;
+// }
 
-function LinkedList() {}
+// }
 
-function Node(value) {}
+// class Node{
+//   constructor(data){
+//   this.value = data;
+//   this.next = null;
+// }
+// }
+//---------------------------------------------------------------------------------------------------------
+
 
 /*
 Implementar la clase HashTable.
@@ -30,7 +147,65 @@ La clase debe tener los siguientes métodos:
 Ejemplo: supongamos que quiero guardar {instructora: 'Ani'} en la tabla. Primero puedo chequear, con hasKey, si ya hay algo en la tabla con el nombre 'instructora'; luego, invocando set('instructora', 'Ani'), se almacenará el par clave-valor en un bucket específico (determinado al hashear la clave)
 */
 
-function HashTable() {}
+class HashTable {
+  constructor(){
+    this.buckets = [];
+    this.numBuckets = 35;
+  }
+  hash(data){
+    let suma = 0;
+    for(let i=0; i < data.length; i++){
+      suma += data.charCodeAt(i);
+    } return suma % this.numBuckets
+  };
+  set(key, value){
+    if(typeof key !== 'string') throw TypeError('Se espera un String');
+    let posArr = this.hash(key);
+    if(this.buckets[posArr] === undefined){
+      this.buckets[posArr] = {};
+    }
+    this.buckets[posArr][key] = value;
+  };
+  get(key){
+   let posArr = this.hash(key);
+   return this.buckets[posArr][key];
+  };
+  hasKey(key){
+    let posArr = this.hash(key);
+    return this.buckets[posArr].hasOwnProperty(key);
+  };
+//---------------------------------------------------------------------------
+// function HashTable() {
+// //   //arreglo de objetos
+// //   this.numBuckets = 35;
+// //   this.buckets = [];
+// }
+// // HashTable.prototype.hash = function (key){
+// //   let sum = 0;
+// //   for (let i = 0; i < key.length; i++){
+// //     sum += key.charCodeAt(i);
+// //   }
+// //   return sum % this.numBuckets;
+// // };
+// // HashTable.prototype.set = function (key, value){
+// //   // revisa que si sea un string
+// //   if(typeof key !== 'string') throw new TypeError('Keys must be strings');
+// //   let posArr = this.hash(key);
+// //   //si la posicion en el arreglo esta vacio, crea un obj.
+// //   if(this.buckets[posArr] === undefined){
+// //     this.buckets[posArr] ={};
+// //   }
+// //   this.buckets[posArr][key] = value;
+// // };
+// // HashTable.prototype.get = function (key){
+// //   let posArr = this.hash(key);
+// //   return this.buckets[posArr][key];
+// // };
+// // HashTable.prototype.hasKey = function (key){
+// //   let posArr = this.hash(key);
+// //   return this.buckets[posArr].hasOwnProperty(key);
+// // };
+}
 
 // No modifiquen nada debajo de esta linea
 // --------------------------------
